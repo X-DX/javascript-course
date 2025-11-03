@@ -110,3 +110,131 @@ End
 Async task done
 
 → The event loop ensures non-blocking behavior.
+
+### JavaScript Engine
+
+- A JavaScript engine is a program that interprets and executes JavaScript code.
+  It’s part of your web browser (like Chrome or Firefox), or standalone (like Node.js uses one too)
+
+- In simple terms:
+  The engine takes human-readable JavaScript source code and turns it into low-level machine code that your CPU can execute efficiently.
+
+- Examples of Popular JavaScript Engines
+  Google Chrome / Node.js -> V8 -> C++
+  Mozilla -> Firefox -> SpiderMonkey C++
+  Safari -> JavaScriptCore (Nitro) -> C++
+  Microsoft Edge (Legacy) -> Chakra -> C++
+
+### JavaScript Engine Memory Architecture
+
+┌──────────────────────────┐
+│ Memory inside the Engine│
+│ ┌────────────────────┐ │
+│ │ ||||Call Stack|||| │ │ ← where code execution happens
+│ └────────────────────┘ │
+│ ┌────────────────────┐ │
+│ │ |||||Heap||||||||| │ │ ← where objects and data live
+│ └────────────────────┘ │
+└──────────────────────────┘
+
+1. The Call Stack: The Call Stack is a data structure (LIFO – Last In, First Out) that tracks the execution context of functions.
+
+- Every time a function is called, a new stack frame (execution context) is pushed on top of the stack.
+- When the function returns, its frame is popped off the stack.
+
+-What’s Inside a Stack Frame?
+A stack frame typically contains:
+
+- Function’s local variables
+- Parameters
+- Reference to outer scope (lexical environment)
+- The instruction pointer (where to return after the function finishes)
+
+2. The Heap
+
+- The Heap is a large, unstructured region in memory where objects, arrays, and functions are stored.
+  Unlike the stack, the heap does not follow an order (not LIFO/FIFO).
+  It’s more like a big “warehouse” where JS stores data that can grow dynamically.
+
+- What Goes into the Heap?
+  Objects
+  Arrays
+  Functions
+  Closures
+  Anything that’s referenced
+
+### Compilation (Source Code → Compiler → Machine Code → CPU Executes)
+
+- Compilation means translating the entire source code into machine code before the program runs.
+  This translation is done by a compiler, which outputs a binary file (e.g., .exe, .out, etc.) that can run directly on the CPU.
+
+### Interpretation
+
+- Interpretation means executing the code line-by-line, translating and running on the fly.
+  The interpreter directly reads the source code and executes each instruction without producing a standalone binary.
+
+### Just-In-Time (JIT) Compilation
+
+-JIT compilation is a hybrid approach that combines interpretation and compilation to achieve both:
+fast startup (like interpretation)
+fast execution (like compilation)
+JIT compiles parts of the code while the program is running, hence the name “Just In Time”.
+
+### How JIT Works (Step-by-Step)
+
+Parser reads JS code → creates an AST (Abstract Syntax Tree).
+Interpreter converts AST → bytecode (a low-level, portable code).
+Profiler monitors which functions run frequently (called hot functions).
+JIT Compiler converts only the hot parts of the code into optimized machine code.
+If assumptions break (e.g., variable types change), the engine de-optimizes and falls back to the interpreter.
+
+### JavaScript Runtime Environment
+
+- A JavaScript Runtime is everything needed to execute JavaScript code, including the engine itself and extra components that the engine alone doesn’t provide — like the Web APIs, event loop, and callback queue.
+
+  ## Components of the JavaScript Runtime
+
+  - A complete JavaScript runtime (like Browser Runtime or Node.js Runtime) has 5 major parts:
+    ┌────────────────────────────────────────────┐
+    │ JavaScript Runtime Environment │
+    ├────────────────────────────────────────────┤
+    │ 1️⃣ JavaScript Engine (e.g., V8)
+    │ 2️⃣ Memory (Call Stack + Heap)
+    │ 3️⃣ Web APIs / Node APIs
+    │ 4️⃣ Callback / Task Queue
+    │ 5️⃣ Event Loop
+    └────────────────────────────────────────────┘
+
+- 1. JavaScript Engine (e.g., V8)
+     We already know this part — it’s responsible for parsing, interpreting, compiling, and executing JS code.
+     - Handles the Call Stack and Heap
+     - Runs synchronous JS code line by line
+     - Optimizes performance using JIT Compilation
+
+- 2.  Memory Components
+      🧩 Call Stack
+      Stores function execution contexts (LIFO)
+      Executes one function at a time → JS is single-threaded
+
+          🧩 Heap
+
+      Stores objects, arrays, and functions
+      Managed by garbage collection
+
+- 3. Web APIs / Node APIs
+     The engine itself doesn’t know about things like:
+     setTimeout()
+     fetch()
+     DOM manipulation
+     console.log()
+     File system (in Node)
+     These features are provided by the runtime environment, not the engine.
+
+- 4. Callback Queue (or Task Queue)
+     When asynchronous operations (like timers or network requests) complete, their callback functions don’t go directly into the call stack.
+     Instead, they are placed in a queue, waiting for the event loop to push them back to the stack when the stack is empty.
+
+- 5. Event Loop
+     - The event loop is the “conductor” that keeps everything running smoothly.
+     - The event loop continuously checks the Call Stack and the Callback Queue.
+       If the call stack is empty, it pushes the next callback from the queue into the stack for execution.
