@@ -266,3 +266,27 @@ If assumptions break (e.g., variable types change), the engine de-optimizes and 
    When you access a variable, JavaScript looks for it in the current scope first, then moves up the chain(outer scopes) until it finds it — or throws a ReferenceError.
 
 7. scope Chain vs Call Stack
+
+### Hoisting
+
+Hoisting is JavaScript’s behavior of moving declarations to the top of their scope before code execution.
+It happens during the creation phase of the execution context.
+
+Key Points:
+
+- Only declarations are hoisted — not initializations.
+- Applies to variables (var, let, const) and functions.
+- Function declarations are hoisted with their definitions.
+- var is hoisted and initialized as undefined.
+- let and const are hoisted but stay in the Temporal Dead Zone (TDZ) until initialized.
+
+### this Keyword
+
+The this keyword refers to the object that owns or calls the function in which it is used.
+Its value depends on how (not where) the function is invoked.
+
+### Regular Function vs Arrow Function
+
+Regular functions in JavaScript have their own this binding, which means the value of this depends on how the function is called. If a regular function is called as a method of an object, this refers to that object; if it’s called in the global scope (non-strict mode), this refers to the global object (window in browsers), and in strict mode, it becomes undefined. Regular functions also have access to the arguments object, which contains all passed parameters, and they can be used as constructors with the new keyword.
+
+In contrast, arrow functions do not have their own this or arguments binding. Instead, they inherit this from the lexical (outer) scope where they are defined — meaning this in an arrow function always refers to the surrounding context. Arrow functions cannot be used as constructors and will throw an error if you try to use new. They also don’t have a prototype property. Due to their concise syntax and predictable this behavior, arrow functions are often preferred in callbacks, event handlers (in classes), and functional programming patterns.
