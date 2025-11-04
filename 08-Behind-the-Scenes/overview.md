@@ -238,3 +238,31 @@ If assumptions break (e.g., variable types change), the engine de-optimizes and 
      - The event loop is the “conductor” that keeps everything running smoothly.
      - The event loop continuously checks the Call Stack and the Callback Queue.
        If the call stack is empty, it pushes the next callback from the queue into the stack for execution.
+
+### Scope in js
+
+1. Scope
+   Scope defines where a variable is accessible in your code.
+   It determines the visibility and lifetime of variables.
+
+2. Types of Scope in JS
+   Global Scope → Accessible anywhere in the code.
+   Function Scope → Variables declared with var inside a function are only accessible within that function.
+   Block Scope (ES6) → Variables declared with let or const are accessible only inside the block { }.
+
+3. Scoping
+   The process by which JavaScript determines the current context of execution and where variables can be accessed from.
+
+4. Lexical Scoping
+   Definition: Inner functions can access variables defined in their outer (parent) functions.
+   It’s based on where the function is defined, not where it’s called.
+
+5. Scope of a Variable
+   var → Function-scoped, hoisted to the top of the function.
+   let / const → Block-scoped, not accessible before declaration (Temporal Dead Zone).
+
+6. Scope Chain
+   The scope chain is the mechanism JS uses to resolve variables.
+   When you access a variable, JavaScript looks for it in the current scope first, then moves up the chain(outer scopes) until it finds it — or throws a ReferenceError.
+
+7. scope Chain vs Call Stack
